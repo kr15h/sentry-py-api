@@ -21,42 +21,30 @@ if not ser.isOpen():
 
 # Setup web server
 urls = (
-    '/a1/on', 'a1_on',
-    '/a1/off', 'a1_off'
+    #  Translates to /a1/on or /a1/off
+    '/(.+)/(.+)', 'switch'  
 )
 
 app = web.application(urls, globals())
 numRetryAttempts = 3
 
-class a1_on:        
-    def GET(self):
-        output = ''
+class switch:
+    def GET(self, switchId, switchState):
+        output = '' 
         global numRetryAttempts
         numRetryAttempts = 3
         if connect(ser):
-            if sentry.switch(ser, 'a1', sentry.SwitchState.ON):
-                output = 'Success'
+            if switchState.lower() == 'on':
+                sentrySwitchState = sentry.SwitchState.ON
             else:
-                output = 'Failed to switch on'
-            sentry.logout(ser)
-        else:
-            output = 'Failed to connect'
-        return output
-
-class a1_off:
-    def GET(self):
-        output = ''
-        global numRetryAttempts
-        numRetryAttempts = 3
-        if connect(ser):
-            if sentry.switch(ser, 'a1', sentry.SwitchState.OFF):
-                output = 'Success'
+                sentrySwitchState = sentry.SwitchState.OFF
+            if sentry.switch(ser, switchId.lower(), sentrySwitchState):
+                output = 'Successfuly changed state of ' + switchId + ' to ' + switchState  
             else:
-                output = 'Failed to switch off'
-            sentry.logout(ser)
+                output = 'Failed to change state of ' + switchId + ' to ' + switchState
         else:
-            output = 'Failed to connect'
-        return output
+            return web.internalerror('Failed') 
+        return output 
 
 def connect(serialObject):
     serialStatus = sentry.getSerialStatus(serialObject)
