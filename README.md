@@ -4,4 +4,6 @@ Python serial API for the Sentry Remote Power Manager. Use ./restapi.py to launc
 
 Before launching, make sure that the web.py module is installed. Install it with python-setuptools: sudo easy_install web.py
 
+Use the following guide to figure out your serial port device name: [Using Minicom](https://help.ubuntu.com/community/Minicom)
+
 License: [MIT](LICENSE)
