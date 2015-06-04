@@ -41,7 +41,7 @@ class switch:
             if sentry.switch(ser, switchId.lower(), sentrySwitchState):
                 output = 'Successfuly changed state of ' + switchId + ' to ' + switchState  
             else:
-                output = 'Failed to change state of ' + switchId + ' to ' + switchState
+                raise web.internalerror('Failed')
         else:
             return web.internalerror('Failed') 
         return output 
