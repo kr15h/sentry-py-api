@@ -41,9 +41,9 @@ class switch:
             if sentry.switch(ser, switchId.lower(), sentrySwitchState):
                 output = 'Successfuly changed state of ' + switchId + ' to ' + switchState  
             else:
-                raise web.internalerror('Failed')
+                raise web.internalerror('Failed to switch')
         else:
-            return web.internalerror('Failed') 
+            return web.internalerror('Failed to connect to serial device') 
         return output 
 
 def connect(serialObject):
